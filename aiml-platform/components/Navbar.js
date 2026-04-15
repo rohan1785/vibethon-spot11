@@ -3,12 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { BrainCircuit, LogOut } from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
+import { BrainCircuit, UserCircle2 } from "lucide-react";
 import styles from "./Navbar.module.css";
 
 const links = [
-  { href: "/dashboard", label: "Dashboard" },
   { href: "/modules", label: "Modules" },
   { href: "/playground", label: "Playground" },
   { href: "/games", label: "Games" },
@@ -18,12 +16,11 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
 
   return (
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
-        <Link href="/dashboard" className={styles.brand} aria-label="AIML Nexus home">
+        <Link href="/modules" className={styles.brand} aria-label="AIML Nexus home">
           <BrainCircuit size={19} />
           <span>AIML Nexus</span>
         </Link>
@@ -38,10 +35,9 @@ export default function Navbar() {
         </nav>
 
         <div className={styles.userZone}>
-          <span className={styles.userText}>{user?.displayName || user?.email || "Guest"}</span>
-          <button type="button" className="button-danger" onClick={logout} aria-label="Logout">
-            <LogOut size={15} />
-          </button>
+          <Link href="/dashboard" className={styles.profileBtn} aria-label="View profile">
+            <UserCircle2 size={28} />
+          </Link>
         </div>
       </div>
     </header>

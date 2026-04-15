@@ -12,6 +12,8 @@ export default function RequireAuth({ children }) {
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/auth");
+    } else if (!loading && user) {
+      router.replace("/modules");
     }
   }, [loading, router, user]);
 
