@@ -23,6 +23,13 @@
   margin-top: 0.7rem;
   display: flex;
   gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.runtimeState {
+  margin: 0.65rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .outputCard pre {
@@ -44,8 +51,69 @@
   color: var(--muted);
 }
 
+.simulationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.simulationCard {
+  padding: 1rem;
+}
+
+.simulationCard p {
+  color: var(--muted);
+}
+
+.simulationResult {
+  margin-top: 0.85rem;
+  border: 1px solid #dce7f6;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f8fbff, #edf4ff);
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.simulationResult strong {
+  font-size: 1.02rem;
+}
+
+.simulationResult span,
+.simulationResult p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.choiceGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.choiceButton,
+.choiceActive {
+  border-radius: 999px;
+  border: 1px solid #d5e2f5;
+  background: #fff;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.choiceActive {
+  background: linear-gradient(135deg, #eaf7f0, #dff3ea);
+  border-color: #bfe2cd;
+  color: #14654a;
+}
+
 @media (max-width: 920px) {
   .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .simulationGrid {
     grid-template-columns: 1fr;
   }
 }

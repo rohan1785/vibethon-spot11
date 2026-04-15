@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
+import { GitFork } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import styles from "./AuthPage.module.css";
@@ -31,7 +32,8 @@ export default function AuthPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [googleBusy, setGoogleBusy] = useState(false);
-  const { login, signup, loginWithGoogle, isFirebaseConfigured } = useAuth();
+  const [githubBusy, setGithubBusy] = useState(false);
+  const { login, signup, loginWithGoogle, loginWithGitHub, isFirebaseConfigured } = useAuth();
   const router = useRouter();
 
   const schema = mode === "login" ? loginSchema : signupSchema;
@@ -72,6 +74,19 @@ export default function AuthPage() {
     }
   };
 
+  const handleGitHubLogin = async () => {
+    setGithubBusy(true);
+    setError("");
+    try {
+      await loginWithGitHub();
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err.message || "GitHub login failed");
+    } finally {
+      setGithubBusy(false);
+    }
+  };
+
   return (
     <main className={styles.wrap}>
       <section className={styles.authPane}>
@@ -98,15 +113,27 @@ export default function AuthPage() {
             </button>
           </div>
 
-          <button
-            type="button"
-            className={styles.googleButton}
-            onClick={handleGoogleLogin}
-            disabled={!isFirebaseConfigured || googleBusy || busy}
-          >
-            <span className={styles.googleBadge} aria-hidden="true">G</span>
-            <span>{googleBusy ? "Connecting..." : "Continue with Google"}</span>
-          </button>
+          <div className={styles.socialButtons}>
+            <button
+              type="button"
+              className={styles.googleButton}
+              onClick={handleGoogleLogin}
+              disabled={!isFirebaseConfigured || googleBusy || busy || githubBusy}
+            >
+              <span className={styles.googleBadge} aria-hidden="true">G</span>
+              <span>{googleBusy ? "Connecting..." : "Continue with Google"}</span>
+            </button>
+
+            <button
+              type="button"
+              className={`${styles.googleButton} ${styles.githubButton}`}
+              onClick={handleGitHubLogin}
+              disabled={!isFirebaseConfigured || githubBusy || busy || googleBusy}
+            >
+              <GitFork size={16} aria-hidden="true" />
+              <span>{githubBusy ? "Connecting..." : "Continue with GitHub"}</span>
+            </button>
+          </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className={styles.form} aria-label="Authentication form">
             {mode === "signup" && (

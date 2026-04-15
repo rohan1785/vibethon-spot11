@@ -20,88 +20,60 @@
 - **React Hook Form** + **Zod** validation
 - **Lucide React** icons
 
-<<<<<<< HEAD
-## Features
+## ✨ Features
+- **Authentication**: Email/password, Google OAuth, GitHub OAuth, logout, and skill-level onboarding
+- **Dashboard**: Progress %, module count, quiz charts, GitHub-style activity heatmap, streaks, rewards, badges, and realtime updates
+- **Leaderboard**: Ranking by total points with Firestore-backed data and demo fallback
+- **Modules**: ML basics covering What is ML, Supervised vs Unsupervised, and Neural Networks
+- **Coding Playground**: In-browser Python execution, dataset API preview, spam detection demo, and image classification demo
+- **Mini-Games**: Object classification, decision tree challenge, and dataset sorting
+- **Quizzes**: Instant scoring, persistence, and module-based feedback
+- **AI Tutor**: AI concept explanations with fallback demo response when the API key is missing
+- **Analytics**: Event tracking for module completion, quizzes, and games
 
-- Login, Signup, Logout + onboarding skill level
-- Personalized dashboard with:
-	- Progress percentage
-	- Completed module count
-	- Quiz score charts
-	- Activity heatmap (GitHub-style)
-	- Realtime updates from Firestore or local demo state
-- AIML modules:
-	- What is ML
-	- Supervised vs Unsupervised
-	- Neural Network basics
-- Coding playground with Python snippet simulation + dataset API preview
-- 3 mini-games:
-	- Object classification (drag-drop)
-	- Decision tree logic challenge
-	- Dataset sorting challenge
-- Quiz system with instant scoring and persistence
-- AI Tutor (OpenAI API route with fallback demo response)
-- Analytics event tracking (`module_completed`, `quiz_attempt`, `games_attempted`)
-
-## Local Setup
-
-1. Install dependencies:
-
+## 🚀 Quickstart
 ```bash
+# Navigate to app directory
+cd aiml-platform
+
+# Install dependencies
 npm install
-```
 
-2. Create env file:
-
-```bash
+# Copy env template
 cp .env.example .env.local
-```
 
-3. Add Firebase + OpenAI keys in `.env.local`.
+# Add your Firebase & OpenAI keys to .env.local
+# (App runs in demo mode if missing)
 
-4. Run dev server:
-
-```bash
+# Start dev server
 npm run dev
 ```
+Open [http://localhost:3000](http://localhost:3000)
 
-Open http://localhost:3000
+## 🌐 Deployment
+1. Push to GitHub.
+2. Import to [Vercel](https://vercel.com).
+3. Add env vars for Firebase/OpenAI.
+4. Deploy instantly with the Next.js build pipeline.
 
-## Demo Flow (3 minutes)
+## 🎮 Demo Flow
+1. Sign up or log in at `/auth`
+2. Open `/dashboard` to show progress, streaks, rewards, and charts
+3. Check `/leaderboard` to show ranking
+4. Complete one module in `/modules`
+5. Run Python and demo simulators in `/playground`
+6. Play mini-games in `/games`
+7. Submit a quiz in `/quiz` and show dashboard updates
+8. Ask the AI Tutor in `/tutor`
 
-1. Login/Signup from `/auth`
-2. Open `/dashboard` and show real-time cards/charts/heatmap
-3. Complete one module in `/modules`
-4. Play mini-games in `/games`
-5. Submit quiz in `/quiz` and show dashboard updates
-6. Ask AI Tutor in `/tutor`
+## 📝 Notes
+- If Firebase env vars are missing, the app runs in local demo mode so the hackathon demo never blocks.
+- Firestore integration activates automatically when env vars are present.
+- Lint: `npm run lint`
+- Build: `npm run build`
 
-## Notes
-
-- If Firebase env vars are missing, app runs in local demo mode so the hackathon demo never blocks.
-- Firestore integration is production-ready and activates automatically when env vars are present.
-
-## Design Resources
-
-- AI/ML UX Framework: `AI-ML-UX-Framework.md`
-
-
-# vibethon-TeamSparten-spot11
-
-Main app lives in `aiml-platform`.
-
-Run locally:
-=======
-## ✨ Features
-- **Authentication**: Login/Signup/Logout + skill level onboarding
-- **Dashboard**: Progress %, module count, quiz charts, GitHub-style activity heatmap, realtime updates
-- **Modules**: ML basics (What is ML, Supervised/Unsupervised, Neural Networks)
-- **Coding Playground**: Python snippets + dataset API
-- **Mini-Games** (3x): Object classification, decision tree challenge, dataset sorting
-- **Quizzes**: Instant scoring + persistence
-- **AI Tutor**: OpenAI-powered explanations (demo fallback)
-- **Analytics**: Event tracking (module_completed, quiz_attempt, etc.)
->>>>>>> ce028aa96430756941bcb65dd919267889e25330
+---
+*Built for Vibethon by Team SpartEn-Spot11*
 
 ## 🚀 Quickstart
 ```bash

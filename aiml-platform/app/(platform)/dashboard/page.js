@@ -14,7 +14,7 @@ import {
 } from "recharts";
 import { useAuth } from "@/context/AuthContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import { buildHeatmapDays } from "@/lib/firestoreService";
+import { BADGE_DEFINITIONS, buildHeatmapDays } from "@/lib/firestoreService";
 import { ML_MODULES } from "@/lib/sampleData";
 import ActivityHeatmap from "@/components/ActivityHeatmap";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -30,6 +30,8 @@ export default function DashboardPage() {
 
   const completed = progress.completedModules || [];
   const quizScores = progress.quizScores || {};
+  const badgeIds = progress.badgeIds || [];
+  const unlockedBadges = BADGE_DEFINITIONS.filter((badge) => badgeIds.includes(badge.id));
   const chartData = ML_MODULES.map((mod) => ({
     name: mod.title.split(" ")[0],
     score: quizScores[mod.id] || 0,
@@ -54,12 +56,10 @@ export default function DashboardPage() {
           { label: "Modules Completed", value: `${completed.length}/${ML_MODULES.length}` },
           { label: "Total Points", value: progress.totalPoints || 0 },
           {
-            label: "Average Quiz Score",
-            value: `${Math.round(
-              Object.values(quizScores).reduce((sum, n) => sum + n, 0) /
-                (Math.max(Object.keys(quizScores).length, 1) || 1)
-            )}%`,
+            label: "Current Streak",
+            value: `${progress.currentStreak || 0} days`,
           },
+          { label: "Unlocked Badges", value: `${badgeIds.length}` },
         ].map((item, idx) => (
           <motion.article
             key={item.label}
@@ -73,6 +73,46 @@ export default function DashboardPage() {
           </motion.article>
         ))}
       </div>
+
+      <article className={`card ${styles.rewardCard}`}>
+        <div className={styles.rewardHeader}>
+          <div>
+            <h3>Rewards and Streaks</h3>
+            <p>
+              Keep learning daily to extend your streak and unlock more badges.
+            </p>
+          </div>
+          <div className={styles.rewardNumbers}>
+            <span>
+              <strong>{progress.currentStreak || 0}</strong> current streak
+            </span>
+            <span>
+              <strong>{progress.longestStreak || 0}</strong> best streak
+            </span>
+            <span>
+              <strong>{progress.rewardPoints || progress.totalPoints || 0}</strong> reward points
+            </span>
+          </div>
+        </div>
+
+        <div className={styles.badgeGrid}>
+          {unlockedBadges.length ? (
+            unlockedBadges.map((badge) => (
+              <motion.div
+                key={badge.id}
+                className={styles.badgeCard}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <strong>{badge.label}</strong>
+                <p>{badge.description}</p>
+              </motion.div>
+            ))
+          ) : (
+            <p className={styles.badgeEmpty}>Complete a module or quiz to unlock your first badge.</p>
+          )}
+        </div>
+      </article>
 
       <article className={`card ${styles.progressCard}`}>
         <div className={styles.progressTitleRow}>

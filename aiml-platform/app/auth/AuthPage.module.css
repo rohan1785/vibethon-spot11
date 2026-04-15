@@ -88,6 +88,33 @@
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
+.socialButtons {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.72rem;
+}
+
+.socialButtons .googleButton {
+  margin-top: 0;
+}
+
+.githubButton {
+  background: linear-gradient(135deg, #172136, #10192a);
+  color: #eff4ff;
+  border-color: #273145;
+}
+
+.githubButton:hover:not(:disabled) {
+  border-color: #3a4960;
+  box-shadow: 0 10px 24px rgba(16, 25, 42, 0.18);
+}
+
+.githubButton:focus-visible,
+.googleButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(52, 130, 101, 0.18);
+}
+
 .googleButton:hover:not(:disabled) {
   transform: translateY(-1px);
   border-color: #bccae0;

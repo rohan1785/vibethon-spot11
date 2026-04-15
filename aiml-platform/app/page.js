@@ -24,7 +24,7 @@ const features = [
   {
     icon: ChartNoAxesCombined,
     title: "Track Real Progress",
-    text: "Realtime dashboard with charts, heatmap, scores, and streaks.",
+    text: "Realtime dashboard with charts, heatmap, scores, streaks, badges, and leaderboard ranking.",
   },
 ];
 
@@ -51,9 +51,6 @@ export default function HomePage() {
               <div className={styles.actions}>
                 <Link href="/auth" className={`button-primary ${styles.primaryCta}`} aria-label="Start learning now">
                   Get Started
-                </Link>
-                <Link href="/dashboard" className={`button-secondary ${styles.secondaryCta}`} aria-label="Open demo dashboard">
-                  View Demo Flow
                 </Link>
               </div>
             </div>
