@@ -72,6 +72,10 @@ Open http://localhost:3000
 - If Firebase env vars are missing, app runs in local demo mode so the hackathon demo never blocks.
 - Firestore integration is production-ready and activates automatically when env vars are present.
 
+## Design Resources
+
+- AI/ML UX Framework: `AI-ML-UX-Framework.md`
+
 
 # vibethon-TeamSparten-spot11
 

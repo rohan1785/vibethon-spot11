@@ -24,7 +24,8 @@ export default function AuthPage() {
   const [mode, setMode] = useState("login");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const { login, signup, isFirebaseConfigured } = useAuth();
+  const [googleBusy, setGoogleBusy] = useState(false);
+  const { login, signup, loginWithGoogle, isFirebaseConfigured } = useAuth();
   const router = useRouter();
 
   const schema = mode === "login" ? loginSchema : signupSchema;
@@ -52,6 +53,19 @@ export default function AuthPage() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setGoogleBusy(true);
+    setError("");
+    try {
+      await loginWithGoogle();
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err.message || "Google login failed");
+    } finally {
+      setGoogleBusy(false);
+    }
+  };
+
   return (
     <main className={styles.wrap}>
       <motion.div
@@ -76,6 +90,16 @@ export default function AuthPage() {
             Signup
           </button>
         </div>
+
+        <button
+          type="button"
+          className={styles.googleButton}
+          onClick={handleGoogleLogin}
+          disabled={!isFirebaseConfigured || googleBusy || busy}
+        >
+          <span className={styles.googleBadge} aria-hidden="true">G</span>
+          <span>{googleBusy ? "Connecting..." : "Continue with Google"}</span>
+        </button>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form} aria-label="Authentication form">
           {mode === "signup" && (

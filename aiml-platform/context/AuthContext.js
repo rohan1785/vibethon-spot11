@@ -3,7 +3,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithPopup,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -82,6 +84,34 @@ export function AuthProvider({ children }) {
         const cred = await signInWithEmailAndPassword(auth, email, password);
         await ensureUserDocument(cred.user.uid, { email: cred.user.email });
         return cred.user;
+      },
+      loginWithGoogle: async () => {
+        if (!isFirebaseConfigured) {
+          throw new Error("Google login requires Firebase configuration.");
+        }
+
+        const provider = new GoogleAuthProvider();
+        try {
+          const cred = await signInWithPopup(auth, provider);
+          await ensureUserDocument(cred.user.uid, { email: cred.user.email });
+          return cred.user;
+        } catch (err) {
+          const code = err?.code || "";
+
+          if (code === "auth/popup-blocked") {
+            throw new Error("Popup blocked. Please allow popups for localhost and try Google login again.");
+          }
+
+          if (code === "auth/popup-closed-by-user") {
+            throw new Error("Google sign-in popup was closed before completion.");
+          }
+
+          if (code === "auth/unauthorized-domain") {
+            throw new Error("This domain is not authorized in Firebase Auth. Add localhost to Authorized domains.");
+          }
+
+          throw new Error("Google login failed. Please try again.");
+        }
       },
       logout: async () => {
         if (!isFirebaseConfigured) {

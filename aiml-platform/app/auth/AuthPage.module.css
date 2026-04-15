@@ -40,6 +40,39 @@
   color: var(--brand-strong);
 }
 
+.googleButton {
+  margin-top: 0.7rem;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  font-weight: 700;
+  padding: 0.62rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.googleButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.googleBadge {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.78rem;
+}
+
 .form {
   margin-top: 1rem;
   display: grid;
