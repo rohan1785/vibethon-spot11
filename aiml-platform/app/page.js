@@ -38,22 +38,62 @@ export default function HomePage() {
           transition={{ duration: 0.5 }}
           className={styles.hero}
         >
-          <span className="chip">
-            <Sparkles size={14} />
-            Hackathon-Ready AI Learning Experience
-          </span>
-          <h1>AIML Nexus: Learn, Code, Play, and Visualize AI in One Platform</h1>
-          <p>
-            A startup-grade MVP for AI/ML education with Firebase auth, real-time dashboard insights,
-            quizzes, mini-games, and an AI Tutor for instant concept explanation.
-          </p>
-          <div className={styles.actions}>
-            <Link href="/auth" className="button-primary" aria-label="Start learning now">
-              Get Started
-            </Link>
-            <Link href="/dashboard" className="button-secondary" aria-label="Open demo dashboard">
-              View Demo Flow
-            </Link>
+          <div className={styles.heroInner}>
+            <div className={styles.heroContent}>
+
+              <h1>
+                AIML Nexus: Learn, Code, Play, and Visualize <span className={styles.aiHighlight}>AI</span> in One Platform
+              </h1>
+              <p>
+                A startup-grade MVP for AI/ML education with Firebase auth, real-time dashboard insights,
+                quizzes, mini-games, and an AI Tutor for instant concept explanation.
+              </p>
+              <div className={styles.actions}>
+                <Link href="/auth" className={`button-primary ${styles.primaryCta}`} aria-label="Start learning now">
+                  Get Started
+                </Link>
+                <Link href="/dashboard" className={`button-secondary ${styles.secondaryCta}`} aria-label="Open demo dashboard">
+                  View Demo Flow
+                </Link>
+              </div>
+            </div>
+
+            <div className={styles.heroVisual} aria-hidden="true">
+              <div className={styles.visualGlow} />
+              <div className={styles.visualOrbital} />
+              <div className={styles.visualHeader}>AIML Command Center</div>
+              <div className={styles.visualStack}>
+                <div className={styles.visualPanel}>
+                  <Brain size={18} aria-hidden="true" />
+                  <div className={styles.visualBars}>
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                </div>
+                <div className={styles.visualPanel}>
+                  <CodeXml size={18} aria-hidden="true" />
+                  <div className={styles.visualBars}>
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                </div>
+                <div className={styles.visualPanel}>
+                  <ChartNoAxesCombined size={18} aria-hidden="true" />
+                  <div className={styles.visualBars}>
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.visualFooter}>
+                <span>Realtime Progress</span>
+                <span>AI Tutor Ready</span>
+                <span>Game Insights</span>
+              </div>
+            </div>
           </div>
         </motion.section>
 
