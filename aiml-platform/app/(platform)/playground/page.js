@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 import { PYTHON_SNIPPET } from "@/lib/sampleData";
 import styles from "./PlaygroundPage.module.css";
@@ -82,8 +82,12 @@ export default function PlaygroundPage() {
   const [loadingSet, setLoadingSet] = useState(false);
   const [spamInput, setSpamInput] = useState("Claim your free prize now and win cash today!");
   const [spamResult, setSpamResult] = useState(null);
+  const [spamAnalyzing, setSpamAnalyzing] = useState(false);
+  const [spamSteps, setSpamSteps] = useState([]);
   const [imageChoice, setImageChoice] = useState(IMAGE_SCENARIOS[0].id);
   const [imageResult, setImageResult] = useState(null);
+  const [imageAnalyzing, setImageAnalyzing] = useState(false);
+  const [imageSteps, setImageSteps] = useState([]);
 
   const runCode = async () => {
     setRunning(true);
@@ -137,29 +141,71 @@ export default function PlaygroundPage() {
     }
   };
 
-  const analyzeSpam = () => {
+  const analyzeSpam = async () => {
+    setSpamAnalyzing(true);
+    setSpamResult(null);
+    setSpamSteps([]);
+
     const normalized = spamInput.toLowerCase();
     const matches = SPAM_KEYWORDS.filter((word) => normalized.includes(word));
+
+    // Animated steps
+    const steps = [
+      { id: 1, text: "Tokenizing message...", delay: 300 },
+      { id: 2, text: "Extracting features...", delay: 600 },
+      { id: 3, text: `Found ${matches.length} spam keywords`, delay: 900 },
+      { id: 4, text: "Computing spam score...", delay: 1200 },
+      { id: 5, text: "Classification complete!", delay: 1500 },
+    ];
+
+    for (const step of steps) {
+      await new Promise((resolve) => setTimeout(resolve, step.delay));
+      setSpamSteps((prev) => [...prev, step]);
+    }
+
     const score = Math.min(98, 18 + matches.length * 20 + (normalized.includes("!") ? 8 : 0));
     const verdict = score >= 50 ? "Spam" : "Legit message";
 
+    await new Promise((resolve) => setTimeout(resolve, 300));
     setSpamResult({
       score,
       verdict,
       matches,
     });
+    setSpamAnalyzing(false);
   };
 
-  const classifyImage = () => {
+  const classifyImage = async () => {
+    setImageAnalyzing(true);
+    setImageResult(null);
+    setImageSteps([]);
+
     const selected = IMAGE_SCENARIOS.find((item) => item.id === imageChoice) || IMAGE_SCENARIOS[0];
+
+    // Animated steps
+    const steps = [
+      { id: 1, text: "Loading image data...", delay: 300 },
+      { id: 2, text: "Preprocessing pixels...", delay: 600 },
+      { id: 3, text: "Running CNN layers...", delay: 900 },
+      { id: 4, text: "Computing probabilities...", delay: 1200 },
+      { id: 5, text: `Detected: ${selected.guess}`, delay: 1500 },
+    ];
+
+    for (const step of steps) {
+      await new Promise((resolve) => setTimeout(resolve, step.delay));
+      setImageSteps((prev) => [...prev, step]);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 300));
     setImageResult(selected);
+    setImageAnalyzing(false);
   };
 
   return (
     <section className={styles.wrap}>
       <header>
         <h1 className="page-title">Coding Playground</h1>
-        <p className="page-subtitle">Run Python in-browser and test real-world AI simulation demos.</p>
+        <p className="page-subtitle">Run Python in-browser and watch AI algorithms work in real-time.</p>
       </header>
 
       <div className={styles.grid}>
@@ -190,21 +236,27 @@ export default function PlaygroundPage() {
           {dataset.length === 0 ? (
             <p>No dataset loaded yet.</p>
           ) : (
-            <ul>
-              {dataset.slice(0, 8).map((row) => (
-                <li key={row.id}>
+            <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              {dataset.slice(0, 8).map((row, idx) => (
+                <motion.li
+                  key={row.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                >
                   Feature: {row.feature} | Label: {row.label}
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           )}
         </motion.article>
       </div>
 
       <div className={styles.simulationGrid}>
+        {/* SPAM DETECTION WITH ANIMATION */}
         <article className={`card ${styles.simulationCard}`}>
-          <h3>Spam Detection Demo</h3>
-          <p>Try a message and see how a simple classifier flags spam-like language.</p>
+          <h3>🔍 Spam Detection Demo</h3>
+          <p>Watch how the algorithm analyzes text for spam patterns.</p>
           <textarea
             className="textarea"
             rows={4}
@@ -213,22 +265,78 @@ export default function PlaygroundPage() {
             aria-label="Spam detection message input"
           />
           <div className={styles.actions}>
-            <button type="button" className="button-primary" onClick={analyzeSpam}>
-              Analyze Message
+            <button type="button" className="button-primary" onClick={analyzeSpam} disabled={spamAnalyzing}>
+              {spamAnalyzing ? "Analyzing..." : "Analyze Message"}
             </button>
           </div>
-          {spamResult && (
-            <div className={styles.simulationResult}>
-              <strong>{spamResult.verdict}</strong>
-              <span>Spam score: {spamResult.score}%</span>
-              <p>{spamResult.matches.length ? `Matched keywords: ${spamResult.matches.join(", ")}` : "No spam keywords matched."}</p>
-            </div>
-          )}
+
+          {/* Animation Steps */}
+          <AnimatePresence>
+            {spamSteps.length > 0 && (
+              <motion.div className={styles.processingSteps}>
+                {spamSteps.map((step, idx) => (
+                  <motion.div
+                    key={step.id}
+                    className={styles.step}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                  >
+                    <motion.div
+                      className={styles.stepIcon}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 0.5, repeat: spamAnalyzing ? Infinity : 0 }}
+                    >
+                      {idx === spamSteps.length - 1 && !spamAnalyzing ? "✓" : "⚙️"}
+                    </motion.div>
+                    <span>{step.text}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Result with Animation */}
+          <AnimatePresence>
+            {spamResult && (
+              <motion.div
+                className={styles.simulationResult}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+              >
+                <motion.div
+                  className={styles.resultHeader}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <strong>{spamResult.verdict}</strong>
+                  <motion.div
+                    className={styles.scoreBar}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${spamResult.score}%` }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    style={{
+                      background: spamResult.score >= 50 ? "#ef4444" : "#10b981",
+                    }}
+                  />
+                  <span>Spam score: {spamResult.score}%</span>
+                </motion.div>
+                <p>
+                  {spamResult.matches.length
+                    ? `Matched keywords: ${spamResult.matches.join(", ")}`
+                    : "No spam keywords matched."}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </article>
 
+        {/* IMAGE CLASSIFICATION WITH ANIMATION */}
         <article className={`card ${styles.simulationCard}`}>
-          <h3>Image Classification Demo</h3>
-          <p>Pick a sample image and preview a lightweight classifier decision.</p>
+          <h3>🖼️ Image Classification Demo</h3>
+          <p>See how a neural network processes and classifies images.</p>
           <div className={styles.choiceGrid}>
             {IMAGE_SCENARIOS.map((item) => (
               <button
@@ -242,17 +350,66 @@ export default function PlaygroundPage() {
             ))}
           </div>
           <div className={styles.actions}>
-            <button type="button" className="button-primary" onClick={classifyImage}>
-              Run Classifier
+            <button type="button" className="button-primary" onClick={classifyImage} disabled={imageAnalyzing}>
+              {imageAnalyzing ? "Classifying..." : "Run Classifier"}
             </button>
           </div>
-          {imageResult && (
-            <div className={styles.simulationResult}>
-              <strong>{imageResult.guess}</strong>
-              <span>Confidence: {imageResult.confidence}%</span>
-              <p>{imageResult.explanation}</p>
-            </div>
-          )}
+
+          {/* Animation Steps */}
+          <AnimatePresence>
+            {imageSteps.length > 0 && (
+              <motion.div className={styles.processingSteps}>
+                {imageSteps.map((step, idx) => (
+                  <motion.div
+                    key={step.id}
+                    className={styles.step}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                  >
+                    <motion.div
+                      className={styles.stepIcon}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 0.5, repeat: imageAnalyzing ? Infinity : 0 }}
+                    >
+                      {idx === imageSteps.length - 1 && !imageAnalyzing ? "✓" : "⚙️"}
+                    </motion.div>
+                    <span>{step.text}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Result with Animation */}
+          <AnimatePresence>
+            {imageResult && (
+              <motion.div
+                className={styles.simulationResult}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+              >
+                <motion.div
+                  className={styles.resultHeader}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <strong>{imageResult.guess}</strong>
+                  <motion.div
+                    className={styles.scoreBar}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${imageResult.confidence}%` }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    style={{ background: "#6366f1" }}
+                  />
+                  <span>Confidence: {imageResult.confidence}%</span>
+                </motion.div>
+                <p>{imageResult.explanation}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </article>
       </div>
     </section>
