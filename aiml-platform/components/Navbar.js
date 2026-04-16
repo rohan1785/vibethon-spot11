@@ -1,9 +1,11 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { BrainCircuit, UserCircle2 } from "lucide-react";
+import { BrainCircuit, UserCircle2, LogOut, LayoutDashboard } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 import styles from "./Navbar.module.css";
 
 const links = [
@@ -16,12 +18,30 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const handleLogout = async () => {
+    setOpen(false);
+    await logout();
+    router.push("/auth");
+  };
 
   return (
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
         <Link href="/modules" className={styles.brand} aria-label="AIML Nexus home">
-          <BrainCircuit size={19} />
+          <BrainCircuit size={24} className={styles.brandIcon} />
           <span>AIML Nexus</span>
         </Link>
 
@@ -34,10 +54,31 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className={styles.userZone}>
-          <Link href="/dashboard" className={styles.profileBtn} aria-label="View profile">
+        <div className={styles.userZone} ref={ref}>
+          <button
+            className={styles.profileBtn}
+            aria-label="Profile menu"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
             <UserCircle2 size={28} />
-          </Link>
+          </button>
+
+          {open && (
+            <div className={styles.dropdown}>
+              {user && (
+                <p className={styles.dropdownUser}>{user.displayName || user.email || "User"}</p>
+              )}
+              <Link href="/dashboard" className={styles.dropdownItem} onClick={() => setOpen(false)}>
+                <LayoutDashboard size={15} />
+                Dashboard
+              </Link>
+              <button className={`${styles.dropdownItem} ${styles.logoutItem}`} onClick={handleLogout}>
+                <LogOut size={15} />
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

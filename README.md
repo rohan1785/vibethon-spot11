@@ -1,1 +1,0 @@
-# -vibethon-TeamSparten-spot11

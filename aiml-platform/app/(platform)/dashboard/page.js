@@ -84,13 +84,16 @@ export default function DashboardPage() {
           </div>
           <div className={styles.rewardNumbers}>
             <span>
-              <strong>{progress.currentStreak || 0}</strong> current streak
+              <strong>{progress.currentStreak || 0}</strong>
+              <small>current streak</small>
             </span>
             <span>
-              <strong>{progress.longestStreak || 0}</strong> best streak
+              <strong>{progress.longestStreak || 0}</strong>
+              <small>best streak</small>
             </span>
             <span>
-              <strong>{progress.rewardPoints || progress.totalPoints || 0}</strong> reward points
+              <strong>{progress.rewardPoints || progress.totalPoints || 0}</strong>
+              <small>reward points</small>
             </span>
           </div>
         </div>

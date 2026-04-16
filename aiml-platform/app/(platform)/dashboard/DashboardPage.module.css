@@ -51,21 +51,32 @@
 
 .rewardNumbers {
   display: flex;
-  gap: 0.65rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
+  align-items: stretch;
 }
 
 .rewardNumbers span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #dce7f6;
-  background: #f7faff;
-  border-radius: 999px;
-  padding: 0.45rem 0.7rem;
+  background: linear-gradient(135deg, #f7faff, #eef4ff);
+  border-radius: 14px;
+  padding: 0.75rem 1.2rem;
   color: #334766;
+  min-width: 100px;
+  gap: 0.2rem;
 }
 
 .rewardNumbers strong {
   font-family: var(--font-space), sans-serif;
-  margin-right: 0.25rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f74ff;
+  line-height: 1;
+  margin: 0;
 }
 
 .badgeGrid {

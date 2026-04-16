@@ -318,6 +318,166 @@
   margin-bottom: 2rem;
 }
 
+.lessonProgress {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 1.3rem;
+}
+
+.lessonStep,
+.lessonStepActive {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-radius: 16px;
+  border: 1px solid #dbe4f0;
+  background: #f8fafc;
+  padding: 0.8rem 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  color: #475569;
+  font-weight: 600;
+}
+
+.lessonStep span,
+.lessonStepActive span {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e2e8f0;
+  color: #1e293b;
+  flex-shrink: 0;
+}
+
+.lessonStepActive {
+  border-color: transparent;
+  color: white;
+}
+
+.lessonStepActive span {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+
+.lessonCard {
+  border-radius: 20px;
+  border: 1px solid #dbe4f0;
+  background: linear-gradient(135deg, #f8fbff, #eef4ff);
+  padding: 1rem 1.05rem;
+  margin-bottom: 1.2rem;
+}
+
+.lessonLabel {
+  margin: 0 0 0.45rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.lessonStepText {
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.lessonCard h4 {
+  margin: 0 0 0.55rem;
+}
+
+.lessonCard p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.65;
+}
+
+.lessonBlock {
+  margin-bottom: 1.2rem;
+}
+
+.lessonBlock p {
+  color: #475569;
+  margin: 0 0 0.7rem;
+}
+
+.exampleBox,
+.questionBox {
+  border-radius: 16px;
+  border: 1px solid #dbe4f0;
+  background: #fff;
+  padding: 0.9rem 1rem;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.questionBox {
+  display: grid;
+  gap: 0.35rem;
+  background: linear-gradient(135deg, #f8fbff, #eef4ff);
+}
+
+.questionBox p,
+.questionBox small {
+  margin: 0;
+}
+
+.questionBox small {
+  color: #64748b;
+}
+
+.checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.checklist span {
+  border-radius: 999px;
+  border: 1px solid #dbe4f0;
+  background: #fff;
+  padding: 0.45rem 0.7rem;
+  color: #475569;
+  font-size: 0.88rem;
+}
+
+.lessonActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.lessonSecondary,
+.lessonPrimary {
+  flex: 1;
+  min-height: 48px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lessonSecondary {
+  background: #eef2f7;
+  color: #334155;
+}
+
+.lessonSecondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.lessonPrimary:hover,
+.lessonSecondary:hover:not(:disabled),
+.btnStartModal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
 .modalContent h4 {
   font-size: 1.1rem;
   color: #1a1a2e;
@@ -362,6 +522,11 @@
 .btnStartModal:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btnStartModal:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* RESPONSIVE */
