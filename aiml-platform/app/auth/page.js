@@ -1,0 +1,229 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { GitFork } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import styles from "./AuthPage.module.css";
+
+const loginSchema = z.object({
+  email: z.string().email("Valid email required"),
+  password: z.string().min(6, "Password must be at least 6 chars"),
+});
+
+const signupSchema = loginSchema.extend({
+  name: z.string().min(2, "Name too short"),
+  skillLevel: z.enum(["Beginner", "Intermediate", "Advanced"]),
+});
+
+const brandHeading = "Build with AI/ML 🚀";
+const brandDescription =
+  "Build practical intuition through modules, mini-games, analytics, and guided tutor workflows designed for rapid hackathon execution.";
+const headingWords = brandHeading.split(" ");
+const descriptionWords = brandDescription.split(" ");
+
+export default function AuthPage() {
+  const [mode, setMode] = useState("login");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [googleBusy, setGoogleBusy] = useState(false);
+  const [githubBusy, setGithubBusy] = useState(false);
+  const { login, signup, loginWithGoogle, loginWithGitHub, isFirebaseConfigured } = useAuth();
+  const router = useRouter();
+
+  const schema = mode === "login" ? loginSchema : signupSchema;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(schema) });
+
+  const onSubmit = async (values) => {
+    setBusy(true);
+    setError("");
+
+    try {
+      if (mode === "login") {
+        await login(values);
+      } else {
+        await signup(values);
+      }
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err.message || "Authentication failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setGoogleBusy(true);
+    setError("");
+    try {
+      await loginWithGoogle();
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err.message || "Google login failed");
+    } finally {
+      setGoogleBusy(false);
+    }
+  };
+
+  const handleGitHubLogin = async () => {
+    setGithubBusy(true);
+    setError("");
+    try {
+      await loginWithGitHub();
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err.message || "GitHub login failed");
+    } finally {
+      setGithubBusy(false);
+    }
+  };
+
+  return (
+    <main className={styles.wrap}>
+      <section className={styles.authPane}>
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={styles.panel}
+        >
+          <h1 className="page-title">Welcome to AIML Nexus</h1>
+          <p className="page-subtitle">Login or signup to start your hackathon demo journey.</p>
+
+          {!isFirebaseConfigured && (
+            <p className={styles.demoNote}>
+              Running in local demo mode. Add Firebase env vars for production auth.
+            </p>
+          )}
+
+          <div className={styles.modeButtons}>
+            <button type="button" onClick={() => setMode("login")} className={mode === "login" ? styles.active : ""}>
+              Login
+            </button>
+            <button type="button" onClick={() => setMode("signup")} className={mode === "signup" ? styles.active : ""}>
+              Signup
+            </button>
+          </div>
+
+          <div className={styles.socialButtons}>
+            <button
+              type="button"
+              className={styles.googleButton}
+              onClick={handleGoogleLogin}
+              disabled={!isFirebaseConfigured || googleBusy || busy || githubBusy}
+            >
+              <span className={styles.googleBadge} aria-hidden="true">G</span>
+              <span>{googleBusy ? "Connecting..." : "Continue with Google"}</span>
+            </button>
+
+            <button
+              type="button"
+              className={`${styles.googleButton} ${styles.githubButton}`}
+              onClick={handleGitHubLogin}
+              disabled={!isFirebaseConfigured || githubBusy || busy || googleBusy}
+            >
+              <GitFork size={16} aria-hidden="true" />
+              <span>{githubBusy ? "Connecting..." : "Continue with GitHub"}</span>
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className={styles.form} aria-label="Authentication form">
+            {mode === "signup" && (
+              <label>
+                Name
+                <input className="input" {...register("name")} aria-invalid={Boolean(errors.name)} />
+                {errors.name && <small>{errors.name.message}</small>}
+              </label>
+            )}
+
+            <label>
+              Email
+              <input className="input" {...register("email")} aria-invalid={Boolean(errors.email)} />
+              {errors.email && <small>{errors.email.message}</small>}
+            </label>
+
+            <label>
+              Password
+              <input type="password" className="input" {...register("password")} aria-invalid={Boolean(errors.password)} />
+              {errors.password && <small>{errors.password.message}</small>}
+            </label>
+
+            {mode === "signup" && (
+              <label>
+                Skill level
+                <select className="select" {...register("skillLevel")} defaultValue="Beginner">
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+              </label>
+            )}
+
+            {error && <p className={styles.error}>{error}</p>}
+
+            <button className="button-primary" type="submit" disabled={busy}>
+              {busy ? <LoadingSpinner label="Please wait" /> : mode === "login" ? "Login" : "Create account"}
+            </button>
+          </form>
+        </motion.div>
+      </section>
+
+      <aside className={styles.visualPane} aria-hidden="true">
+        <div className={styles.visualGlowPrimary} />
+        <div className={styles.visualGlowSecondary} />
+        <div className={styles.visualContent}>
+          <p className={styles.visualKicker}>AIML Nexus Platform</p>
+          <motion.h2 initial={{ opacity: 1 }} animate={{ opacity: 1 }}>
+            {headingWords.map((word, index) => (
+              <motion.span
+                key={`${word}-${index}`}
+                className={styles.word}
+                initial={{ opacity: 0.28, y: 6 }}
+                animate={{ opacity: [0.28, 1, 0.28], y: [6, 0, 6] }}
+                transition={{
+                  duration: 2.1,
+                  ease: "easeInOut",
+                  repeat: Number.POSITIVE_INFINITY,
+                  delay: index * 0.12,
+                }}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </motion.h2>
+          <motion.p initial={{ opacity: 1 }} animate={{ opacity: 1 }}>
+            {descriptionWords.map((word, index) => (
+              <motion.span
+                key={`${word}-${index}`}
+                className={styles.word}
+                initial={{ opacity: 0.32, y: 5 }}
+                animate={{ opacity: [0.32, 0.95, 0.32], y: [5, 0, 5] }}
+                transition={{
+                  duration: 2.4,
+                  ease: "easeInOut",
+                  repeat: Number.POSITIVE_INFINITY,
+                  delay: 0.25 + index * 0.055,
+                }}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </motion.p>
+          <div className={styles.visualStats}>
+            <span>Realtime Insights</span>
+            <span>Interactive Learning</span>
+            <span>Production-ready Flow</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+  );
+}

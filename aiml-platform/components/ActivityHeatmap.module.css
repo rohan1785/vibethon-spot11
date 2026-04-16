@@ -1,0 +1,31 @@
+.wrap {
+  display: grid;
+  grid-template-columns: repeat(28, 1fr);
+  gap: 0.28rem;
+}
+
+.cell {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 3px;
+}
+
+.l0 {
+  background: #e6ecf8;
+}
+
+.l1 {
+  background: #c6daf9;
+}
+
+.l2 {
+  background: #8cb6f8;
+}
+
+.l3 {
+  background: #4e90f4;
+}
+
+.l4 {
+  background: #0f74ff;
+}

@@ -1,0 +1,310 @@
+.wrap {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 44% 56%;
+  background:
+    radial-gradient(circle at 10% 12%, rgba(82, 150, 123, 0.2) 0%, transparent 40%),
+    #eef2f8;
+}
+
+.authPane {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 3rem clamp(1.2rem, 4vw, 4.5rem);
+}
+
+.panel {
+  width: min(560px, 100%);
+  padding: 0;
+}
+
+.panel :global(.page-title) {
+  margin-bottom: 0.45rem;
+  font-family: "Inter", "Manrope", "Segoe UI", sans-serif;
+  font-size: clamp(2rem, 3.4vw, 2.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1.06;
+}
+
+.panel :global(.page-subtitle) {
+  color: #5f7192;
+  font-size: 1.04rem;
+}
+
+.demoNote {
+  margin-top: 1rem;
+  font-size: 0.86rem;
+  border-radius: 12px;
+  border: 1px solid #b6cfff;
+  background: #eaf2ff;
+  padding: 0.72rem 0.8rem;
+  color: #124084;
+}
+
+.modeButtons {
+  margin-top: 1.15rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.68rem;
+}
+
+.modeButtons button {
+  border: 1px solid #d2deef;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.68rem 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.modeButtons button:hover {
+  transform: translateY(-1px);
+  border-color: #bccae0;
+}
+
+.active {
+  background: linear-gradient(135deg, #edf9f4, #e4f4ec);
+  color: #116247;
+  border-color: #b7dfcd;
+  box-shadow: 0 8px 22px rgba(17, 98, 71, 0.12);
+}
+
+.googleButton {
+  margin-top: 0.72rem;
+  width: 100%;
+  border: 1px solid #d2deef;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #1a2a44;
+  font-weight: 700;
+  padding: 0.72rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.socialButtons {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.72rem;
+}
+
+.socialButtons .googleButton {
+  margin-top: 0;
+}
+
+.githubButton {
+  background: linear-gradient(135deg, #172136, #10192a);
+  color: #eff4ff;
+  border-color: #273145;
+}
+
+.githubButton:hover:not(:disabled) {
+  border-color: #3a4960;
+  box-shadow: 0 10px 24px rgba(16, 25, 42, 0.18);
+}
+
+.githubButton:focus-visible,
+.googleButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(52, 130, 101, 0.18);
+}
+
+.googleButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: #bccae0;
+  box-shadow: 0 10px 24px rgba(22, 37, 68, 0.08);
+}
+
+.googleButton:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.googleBadge {
+  width: 1.38rem;
+  height: 1.38rem;
+  border-radius: 999px;
+  border: 1px solid #cfd9ea;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: #1c2f4d;
+}
+
+.form {
+  margin-top: 1.1rem;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.form label {
+  display: grid;
+  gap: 0.42rem;
+  font-size: 0.94rem;
+  color: #213655;
+}
+
+.form :global(.input),
+.form :global(.select) {
+  border-radius: 10px;
+  border: 1px solid #d2deef;
+  background: rgba(255, 255, 255, 0.55);
+  min-height: 2.65rem;
+  padding-inline: 0.85rem;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.form :global(.input):focus,
+.form :global(.select):focus {
+  border-color: #66a78b;
+  box-shadow: 0 0 0 4px rgba(52, 130, 101, 0.16);
+  background: #fff;
+}
+
+.form :global(.button-primary) {
+  margin-top: 0.25rem;
+  min-height: 2.75rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1f8e66, #0f6f4f);
+  box-shadow: 0 8px 22px rgba(14, 93, 66, 0.24);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.form :global(.button-primary):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(14, 93, 66, 0.28);
+}
+
+.form small {
+  color: var(--danger);
+}
+
+.error {
+  margin: 0;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.visualPane {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(2rem, 4vw, 4rem);
+  background:
+    linear-gradient(155deg, #16352d 0%, #1f4b3f 45%, #1a3f35 100%);
+}
+
+.visualGlowPrimary {
+  position: absolute;
+  width: min(520px, 60%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  left: -8%;
+  top: 10%;
+  background: radial-gradient(circle, rgba(110, 214, 171, 0.28), transparent 70%);
+  filter: blur(8px);
+}
+
+.visualGlowSecondary {
+  position: absolute;
+  width: min(520px, 58%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  right: -12%;
+  bottom: -16%;
+  background: radial-gradient(circle, rgba(255, 205, 121, 0.18), transparent 72%);
+  filter: blur(10px);
+}
+
+.visualContent {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  padding: 0;
+  color: #ebfff5;
+}
+
+.visualKicker {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgba(229, 255, 242, 0.78);
+  margin-bottom: 0.8rem;
+}
+
+.visualContent h2 {
+  margin: 0;
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  line-height: 1.08;
+  font-family: "Inter", "Manrope", sans-serif;
+}
+
+.visualContent p {
+  margin: 1rem 0 0;
+  color: rgba(223, 245, 234, 0.88);
+  line-height: 1.65;
+  max-width: 36ch;
+}
+
+.word {
+  display: inline-block;
+  margin-right: 0.32rem;
+}
+
+.visualStats {
+  margin-top: 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.visualStats span {
+  padding: 0.42rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 248, 234, 0.24);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+  color: rgba(238, 255, 246, 0.94);
+}
+
+@media (max-width: 980px) {
+  .wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .authPane {
+    order: 1;
+    padding: 1.4rem 1rem;
+  }
+
+  .visualPane {
+    order: 2;
+    min-height: 260px;
+    padding: 1.4rem 1rem 1.8rem;
+  }
+
+  .visualContent {
+    width: min(640px, 100%);
+  }
+}
+
+@media (max-width: 640px) {
+  .panel :global(.page-title) {
+    font-size: clamp(1.55rem, 8vw, 2rem);
+  }
+
+  .visualStats {
+    gap: 0.45rem;
+  }
+}
